@@ -43,36 +43,96 @@ class App extends React.Component {
     })
   }
 
+  addProduct = () => {
+    firebase
+    .firestore()
+    .collection('products')
+    .add({
+      img:'https://cdn.thewirecutter.com/wp-content/media/2021/09/ipad2021-2048px-9886-2x1-1.jpg?auto=webp&quality=75&crop=2:1&width=1024',
+      price: 600,
+      qty: 2,
+      title: 'Tab'
+    })
+    .then((docRef) => {
+      console.log('Product added ', docRef)
+    })
+    .catch((error) =>{
+      console.log('Error: ', error);
+    })
+  }
+
   increaseQuantity = (product) => {
     const {products} = this.state;
     const index = products.indexOf(product);
-
+// to increase the quantity only in the web page and not the firebase...
+  /*
     products[index].qty += 1;
 
     this.setState({
         products: products
     })
+  */
+
+// to increase qty in firebase => call onShanpshot() => call setState => reRender...
+
+    const docRef = firebase.firestore().collection('products').doc(products[index].id);
+    docRef.update({
+      qty: products[index].qty + 1
+    })
+    .then(() => {
+      console.log('Updated Successfully')
+    })
+    .catch((error) => {
+      console.log('Error: ', error);
+    })
+
+
   }
 
   decreaseQuantity = (product) => {
     const {products} = this.state;
     const index = products.indexOf(product);
+// to decrease the quantity only in the web page and not the firebase...  
+    /*
     products[index].qty = products[index].qty==0 ? 0 : 
                             products[index].qty - 1;
 
     this.setState({
         products: products
     })
+    */
+// to decrease qty in firebase => call onShanpshot() => call setState => reRender...
+
+    const docRef = firebase.firestore().collection('products').doc(products[index].id);
+    docRef.update({
+      qty: products[index].qty == 0 ? 0 : products[index].qty - 1
+    })
+    .then(() => {
+      console.log('Decreased Successfully')
+    })
+    .catch((error) => {
+      console.log('Error: ', error)
+    })
+
   }
 
   handleDelete = (product) => {
     const {products} = this.state;
     const index = products.indexOf(product);
-    console.log("Deleted "+index);
-    products.splice(index, 1);
+    // console.log("Deleted "+index);
+    // products.splice(index, 1);
 
-    this.setState({
-        products
+    // this.setState({
+    //     products
+    // })
+
+    const docRef = firebase.firestore().collection('products').doc(products[index].id);
+    docRef.delete()
+    .then(() => {
+      console.log('Deleted Successfully: ', docRef)
+    })
+    .catch((error) => {
+      console.log('Error: ', error)
     })
   }
   onHandleDelete = (id) => {
@@ -106,6 +166,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navbar count={this.getCartCount()}/>
+        <button onClick={this.addProduct} stylr={{padding: 20, fontSize:20}}>Add a product</button>
         <Cart
           products={products}
           increaseQuantity={this.increaseQuantity}

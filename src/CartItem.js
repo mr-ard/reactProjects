@@ -36,8 +36,8 @@ const CartItem = (props) => {
                     alt="delete" 
                     className="action-icons" 
                     src="https://as2.ftcdn.net/v2/jpg/04/53/62/11/1000_F_453621185_6ECOCMQaCdYqYWKg2SqfRP44HJJD2XMF.jpg"
-                    onClick={() => onHandleDelete(product.id)}
-                //  onClick={() => handleDelete(product)}
+                    // onClick={() => onHandleDelete(product.id)}
+                    onClick={() => handleDelete(product)}
                 />
             </div>
         </div>
