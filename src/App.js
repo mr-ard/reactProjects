@@ -2,11 +2,8 @@ import React from 'react';
 import CartItem from './CartItem';
 import Cart from './Cart';
 import Navbar from './Navbar';
-// import * as firebase from 'firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-// import 'firebase/compat/auth';
-
 
 class App extends React.Component {
 
@@ -23,10 +20,10 @@ class App extends React.Component {
     .firestore()
     .collection('products')
     .onSnapshot((snapshot) => {
-      console.log(snapshot)
+      // console.log(snapshot)
 
       snapshot.docs.map((doc) => {
-        console.log(doc.data())
+        // console.log(doc.data())
       });
 
       const products = snapshot.docs.map((doc) => {
@@ -54,7 +51,7 @@ class App extends React.Component {
       title: 'Tab'
     })
     .then((docRef) => {
-      console.log('Product added ', docRef)
+      // console.log('Product added ', docRef)
     })
     .catch((error) =>{
       console.log('Error: ', error);
@@ -80,7 +77,7 @@ class App extends React.Component {
       qty: products[index].qty + 1
     })
     .then(() => {
-      console.log('Updated Successfully')
+      // console.log('Updated Successfully')
     })
     .catch((error) => {
       console.log('Error: ', error);
@@ -108,7 +105,7 @@ class App extends React.Component {
       qty: products[index].qty == 0 ? 0 : products[index].qty - 1
     })
     .then(() => {
-      console.log('Decreased Successfully')
+      // console.log('Decreased Successfully')
     })
     .catch((error) => {
       console.log('Error: ', error)
@@ -129,7 +126,7 @@ class App extends React.Component {
     const docRef = firebase.firestore().collection('products').doc(products[index].id);
     docRef.delete()
     .then(() => {
-      console.log('Deleted Successfully: ', docRef)
+      // console.log('Deleted Successfully: ', docRef)
     })
     .catch((error) => {
       console.log('Error: ', error)
@@ -139,7 +136,7 @@ class App extends React.Component {
     const {products} = this.state;
 
     const items = products.filter((item) => item.id !==id);
-    console.log("Deleted "+id);
+    // console.log("Deleted "+id);
     this.setState({
         products: items
     })
